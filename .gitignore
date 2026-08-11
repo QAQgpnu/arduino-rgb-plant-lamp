@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+*.hex
+*.bin
+*.elf
+*.map
+.pio/
+build/
+dist/
+__pycache__/
+.venv/
+.env
+.env.*
+!.env.example
+
