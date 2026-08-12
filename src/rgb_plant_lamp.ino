@@ -13,9 +13,60 @@ constexpr size_t kBufferSize = 32;
 
 char inputBuffer[kBufferSize];
 size_t inputLength = 0;
+uint8_t redPwm = 0;
+uint8_t greenPwm = 0;
+uint8_t bluePwm = 0;
+
+char upperAscii(const char value) {
+  return (value >= 'a' && value <= 'z') ? value - ('a' - 'A') : value;
+}
+
+bool equalsIgnoreCase(const char *value, const char *expected) {
+  while (*value != '\0' && *expected != '\0') {
+    if (upperAscii(*value) != upperAscii(*expected)) {
+      return false;
+    }
+    ++value;
+    ++expected;
+  }
+  return *value == '\0' && *expected == '\0';
+}
+
+void writeChannel(const char channel, const uint8_t pwm) {
+  if (channel == 'r' || channel == 'R') {
+    redPwm = pwm;
+    analogWrite(kRedPin, redPwm);
+  } else if (channel == 'g' || channel == 'G') {
+    greenPwm = pwm;
+    analogWrite(kGreenPin, greenPwm);
+  } else {
+    bluePwm = pwm;
+    analogWrite(kBluePin, bluePwm);
+  }
+}
+
+void printStatus() {
+  Serial.print("STATE R=");
+  Serial.print(redPwm);
+  Serial.print(" G=");
+  Serial.print(greenPwm);
+  Serial.print(" B=");
+  Serial.println(bluePwm);
+}
 
 void applyToken(char *token) {
   if (token == nullptr || token[0] == '\0') {
+    return;
+  }
+
+  if (equalsIgnoreCase(token, "OFF")) {
+    writeChannel('R', 0);
+    writeChannel('G', 0);
+    writeChannel('B', 0);
+    return;
+  }
+  if (equalsIgnoreCase(token, "STATUS")) {
+    printStatus();
     return;
   }
 
@@ -25,15 +76,14 @@ void applyToken(char *token) {
     return;
   }
 
-  const long value = constrain(strtol(token + 1, nullptr, 10), 0L, 255L);
-  const uint8_t pwm = static_cast<uint8_t>(value);
-  if (channel == 'r' || channel == 'R') {
-    analogWrite(kRedPin, pwm);
-  } else if (channel == 'g' || channel == 'G') {
-    analogWrite(kGreenPin, pwm);
-  } else {
-    analogWrite(kBluePin, pwm);
+  char *end = nullptr;
+  const long parsedValue = strtol(token + 1, &end, 10);
+  if (end == token + 1 || *end != '\0') {
+    return;
   }
+  const long value = constrain(parsedValue, 0L, 255L);
+  const uint8_t pwm = static_cast<uint8_t>(value);
+  writeChannel(channel, pwm);
 }
 
 void applyLine() {
@@ -52,9 +102,9 @@ void setup() {
   pinMode(kRedPin, OUTPUT);
   pinMode(kGreenPin, OUTPUT);
   pinMode(kBluePin, OUTPUT);
-  analogWrite(kRedPin, 0);
-  analogWrite(kGreenPin, 0);
-  analogWrite(kBluePin, 0);
+  writeChannel('R', 0);
+  writeChannel('G', 0);
+  writeChannel('B', 0);
 }
 
 void loop() {
@@ -74,4 +124,3 @@ void loop() {
     }
   }
 }
-
