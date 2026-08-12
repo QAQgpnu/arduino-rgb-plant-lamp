@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">Arduino RGB plant lamp architecture</title>
+  <desc id="desc">Serial or Bluetooth commands flow to an Arduino parser, then three PWM channels drive an external LED driver and RGB lamp.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#60758a"/></marker>
+    <style>.box{fill:#f7fafc;stroke:#335b78;stroke-width:2}.accent{fill:#e8f5ef;stroke:#277a55;stroke-width:2}.label{font:600 18px system-ui,sans-serif;fill:#17324a}.small{font:14px system-ui,sans-serif;fill:#486176}.line{stroke:#60758a;stroke-width:3;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="960" height="300" rx="18" fill="#ffffff"/>
+  <rect class="box" x="35" y="85" width="190" height="120" rx="14"/><text class="label" x="130" y="130" text-anchor="middle">Serial client</text><text class="small" x="130" y="158" text-anchor="middle">USB monitor or</text><text class="small" x="130" y="180" text-anchor="middle">transparent UART</text>
+  <rect class="box" x="285" y="65" width="215" height="160" rx="14"/><text class="label" x="392" y="112" text-anchor="middle">Arduino firmware</text><text class="small" x="392" y="142" text-anchor="middle">validate + clamp</text><text class="small" x="392" y="166" text-anchor="middle">remember state</text><text class="small" x="392" y="190" text-anchor="middle">3-channel PWM</text>
+  <rect class="box" x="560" y="85" width="165" height="120" rx="14"/><text class="label" x="642" y="130" text-anchor="middle">Driver stage</text><text class="small" x="642" y="160" text-anchor="middle">MOSFET / resistor</text><text class="small" x="642" y="182" text-anchor="middle">current limiting</text>
+  <rect class="accent" x="785" y="85" width="140" height="120" rx="14"/><text class="label" x="855" y="135" text-anchor="middle">RGB lamp</text><text class="small" x="855" y="166" text-anchor="middle">R · G · B</text>
+  <path class="line" d="M225 145 H285"/><path class="line" d="M500 145 H560"/><path class="line" d="M725 145 H785"/><text class="small" x="255" y="128" text-anchor="middle">9600 baud</text><text class="small" x="530" y="128" text-anchor="middle">PWM</text>
+</svg>

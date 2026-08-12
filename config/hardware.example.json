@@ -1,0 +1,10 @@
+{
+  "board": "Arduino Uno",
+  "supply_voltage_v": 5.0,
+  "channel_max_current_ma": {
+    "R": 20.0,
+    "G": 20.0,
+    "B": 20.0
+  },
+  "note": "Example values for the offline estimator only; measure your actual driver and LED load."
+}
