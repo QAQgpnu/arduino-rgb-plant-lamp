@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 0.3.0 - 2026-09-01
+
+- Put the sketch in an Arduino CLI-compatible directory and compile it for Arduino Uno in CI.
+- Drop an entire overlong serial frame instead of accepting its trailing bytes as a new command.
+- Accept actual tab characters as command separators.
+- Add an evidence-bounded project progress and publication-scope matrix.
+
 ## 0.2.0 - 2026-08-12
 
 - Add `OFF` and `STATUS` serial commands and reject malformed numeric values.

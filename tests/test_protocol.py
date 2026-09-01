@@ -57,7 +57,7 @@ class RepositoryTests(unittest.TestCase):
             "docs/architecture.svg",
             "docs/wiring.md",
             "docs/safety.md",
-            "src/rgb_plant_lamp.ino",
+            "firmware/rgb_plant_lamp/rgb_plant_lamp.ino",
         ]
         for relative_path in required:
             self.assertTrue((ROOT / relative_path).is_file(), relative_path)
@@ -68,8 +68,10 @@ class RepositoryTests(unittest.TestCase):
             self.assertNotIn(forbidden, text)
 
     def test_sketch_has_bounds_numeric_validation_and_status(self):
-        text = (ROOT / "src" / "rgb_plant_lamp.ino").read_text(encoding="utf-8")
+        text = (ROOT / "firmware" / "rgb_plant_lamp" / "rgb_plant_lamp.ino").read_text(encoding="utf-8")
         self.assertIn("inputLength < kBufferSize - 1", text)
+        self.assertIn("discardingInput = true", text)
+        self.assertIn("!discardingInput && inputLength > 0", text)
         self.assertIn("end == token + 1", text)
         self.assertIn('equalsIgnoreCase(token, "OFF")', text)
         self.assertIn('equalsIgnoreCase(token, "STATUS")', text)
