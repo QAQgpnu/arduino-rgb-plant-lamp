@@ -13,6 +13,7 @@ constexpr size_t kBufferSize = 32;
 
 char inputBuffer[kBufferSize];
 size_t inputLength = 0;
+bool discardingInput = false;
 uint8_t redPwm = 0;
 uint8_t greenPwm = 0;
 uint8_t bluePwm = 0;
@@ -88,10 +89,10 @@ void applyToken(char *token) {
 
 void applyLine() {
   inputBuffer[inputLength] = '\0';
-  char *token = strtok(inputBuffer, ", \\t");
+  char *token = strtok(inputBuffer, ", \t");
   while (token != nullptr) {
     applyToken(token);
-    token = strtok(nullptr, ", \\t");
+    token = strtok(nullptr, ", \t");
   }
   inputLength = 0;
 }
@@ -111,16 +112,22 @@ void loop() {
   while (Serial.available() > 0) {
     const char ch = static_cast<char>(Serial.read());
     if (ch == '\n' || ch == '\r') {
-      if (inputLength > 0) {
+      if (!discardingInput && inputLength > 0) {
         applyLine();
       }
+      inputLength = 0;
+      discardingInput = false;
+      continue;
+    }
+    if (discardingInput) {
       continue;
     }
     if (inputLength < kBufferSize - 1) {
       inputBuffer[inputLength++] = ch;
     } else {
-      // Drop an overlong frame instead of writing past the buffer.
+      // Drop the entire overlong frame until its line ending arrives.
       inputLength = 0;
+      discardingInput = true;
     }
   }
 }

@@ -69,7 +69,7 @@ python demo/lamp_simulator.py "R180,G80,B20" STATUS OFF
 
 ### 固件快速开始
 
-1. 在 Arduino IDE 中打开 [`src/rgb_plant_lamp.ino`](src/rgb_plant_lamp.ino)。
+1. 在 Arduino IDE 中打开 [`firmware/rgb_plant_lamp/rgb_plant_lamp.ino`](firmware/rgb_plant_lamp/rgb_plant_lamp.ino)。
 2. 选择实际板卡和串口后上传。
 3. 打开 `9600` 波特率串口监视器，行尾选择换行。
 4. 发送 [`examples/commands.txt`](examples/commands.txt) 中的命令。
@@ -88,9 +88,11 @@ estimated_power = supply_voltage × Σ(channel_max_current × pwm / 255)
 
 ### 已验证与未验证
 
-**[已确认] 本仓库验证：** Python 离线 Demo、协议语义、边界值、错误输入、文档结构和敏感信息规则可由自动化测试检查。
+**[已确认] 本仓库验证：** Python 离线 Demo、协议语义、边界值、错误输入和文档结构可由自动化测试检查；GitHub Actions 同时为 Arduino Uno 目标编译固件。
 
-**[待确认] 硬件验证：** 当前没有在本轮环境中完成具体 Arduino 板卡编译、实物接线、功率计测量、温升、EMC、防水或植物生长效果测试。
+**[待确认] 硬件验证：** 自动化编译不等于实物验证；当前没有完成实物接线、功率计测量、温升、EMC、防水或植物生长效果测试。
+
+详细进度、公开范围与验证边界见 [`docs/project-status.md`](docs/project-status.md)。
 
 ### 项目结构
 
@@ -103,11 +105,12 @@ estimated_power = supply_voltage × Σ(channel_max_current × pwm / 255)
 ├── docs/
 │   ├── architecture.md
 │   ├── architecture.svg
+│   ├── project-status.md
 │   ├── protocol.md
 │   ├── safety.md
 │   └── wiring.md
 ├── examples/commands.txt
-├── src/rgb_plant_lamp.ino
+├── firmware/rgb_plant_lamp/rgb_plant_lamp.ino
 ├── tests/test_protocol.py
 └── .github/workflows/quality.yml
 ```
